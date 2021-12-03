@@ -1,0 +1,302 @@
+﻿
+@{
+    int? thang = ViewBag.idThang as int?;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities db = new ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities();
+}
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+@using (Html.BeginForm())
+{
+    <div style="border: 1px solid black; height: 70px; margin-top: 80px; padding-top:15px" class="container-fluid; ">
+        <div class="row">
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Năm</h6>
+            </div>
+            <div class="col-lg-2" style="text-align:center;padding-top:5px;">
+                <input type="number" class="form-control" name="nam" />
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Tháng</h6>
+            </div>
+
+            <div class="col-lg-2" style="text-align:center;padding-top:5px;">
+                <select class="form-select" aria-label="Default select example" name="TimKiem">
+                    @{
+                        int? maDAn2 = (int?)Session["MaDuAn"];
+                        var duAn = db.THANGLAMVIECs.Where(s => s.idDuAn == maDAn2).ToList();
+                        foreach (var item2 in duAn)
+                        {
+                            if (item2.idThang == thang)
+                            {
+                                <option value="@item2.idThang" selected>@item2.TenThang</option>
+                            }
+                            else
+                            {
+                                <option value="@item2.idThang">@item2.TenThang</option>
+                            }
+
+
+                        }
+                    }
+                </select>
+                <input hidden  id="idThang" value="@thang" />
+            </div>
+            <div class="col-lg-1">
+                <button type="submit" class="btn btn-danger" id="bn_tim"><i class="fas fa-search"></i>&ensp;Tìm </button>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="chartdiv"></div>
+
+<table class="table " style="margin-top:40px;">
+    <thead>
+        <tr>
+            <th colspan="5" style="border: 1px solid black"></th>
+            @{
+                int? maDAn = (int?)Session["MaDuAn"];
+                int? idThang = (int?)ViewBag.idThang;
+                var Tuan = db.TUANLAMVIECs.Where(s => s.idThang == idThang && s.THANGLAMVIEC.idDuAn == maDAn).ToList();
+                foreach (var item in Tuan)
+                {
+                    <th colspan="2" style="border: 1px solid black;text-align:center">
+                        <h6> @item.TenTuan</h6>
+                        <span> @DateTime.Parse(item.NgayBD.ToString()).ToString("dd-MM") -> @DateTime.Parse(item.NgayKT.ToString()).ToString("dd-MM")</span>
+                    </th>
+                }
+            }
+        </tr>
+        <tr>
+            <td style="border: 1px solid black">STT</td>
+            <td style="border: 1px solid black">Nhân sự</td>
+            <td style="border: 1px solid black">H.Thành</td>
+            <td style="border: 1px solid black">Xếp loại</td>
+            <td style="border: 1px solid black">Nhận xét</td>
+            @{
+                var Tuan2 = db.TUANLAMVIECs.Where(s => s.idThang == idThang && s.THANGLAMVIEC.idDuAn == maDAn).ToList();
+                foreach (var item in Tuan2)
+                {
+                    <td style="text-align:center; border: 1px solid black">Số giờ</td>
+                    <td style="text-align:center; border: 1px solid black">% Hoàn thành</td>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody id="LoadDGNhanSu">
+
+        @{
+            var DGThang = db.DGNHANSUTHEOTHANGs.Where(s => s.idThang == idThang && s.THANGLAMVIEC.idDuAn == maDAn).ToList();
+            var stt = 0;
+            foreach (var item in DGThang)
+            {
+                stt++;
+                <tr>
+
+                    <td style="border: 1px solid black">@stt</td>
+                    <td style="border: 1px solid black">@item.NGUOIDUNG.HoDemND @item.NGUOIDUNG.TenND</td>
+                    <td style="border: 1px solid black">@item.TBThang %</td>
+                    <td style="border: 1px solid black">@item.XepLoai</td>
+                    <td style="border: 1px solid black">@item.NhanXetCaThang</td>
+                    @{
+                        var DGTuan = db.TUANLAMVIECs.Where(s => s.idThang == idThang).ToList();
+                        foreach (var item3 in DGTuan)
+                        {
+                            foreach (var item2 in item3.DGNHANSUTHEOTUANs.Where(s => s.idTuan == item3.idTuan && s.idNguoiDung == item.idNguoiDung))
+                            {
+                                if (@item3.CONGVIECTUANs.Where(s => s.idTuan == item3.idTuan && s.idNguoiDung == item.idNguoiDung).Sum(s => s.ThoiGianLam).GetValueOrDefault() < 40)
+                                {
+                                    <td style="background:#ff6a00;border: 1px solid black">@item3.CONGVIECTUANs.Where(s => s.idTuan == item3.idTuan && s.idNguoiDung == item.idNguoiDung).Sum(s => s.ThoiGianLam).GetValueOrDefault()</td>
+
+                                }
+                                else
+                                {
+                                    <td style="border: 1px solid black">@item3.CONGVIECTUANs.Where(s => s.idTuan == item3.idTuan && s.idNguoiDung == item.idNguoiDung).Sum(s => s.ThoiGianLam).GetValueOrDefault()</td>
+
+                                }
+                                if (@item2.HoanThanh < 80)
+                                {
+                                    <td style="background:#ff6a00;border: 1px solid black">@item2.HoanThanh %</td>
+
+                                }
+                                else
+                                {
+                                    <td style="border: 1px solid black">@item2.HoanThanh %</td>
+
+                                }
+                            }
+
+                        }
+                    }
+
+                </tr>
+            }
+        }
+    </tbody>
+    @*<tbody id="LoadDGNhanSu"></tbody>*@
+</table>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<!-- Chart code -->
+@section scripts{
+    <script>
+        $(document).ready(() => {
+            loadBieuDo();
+        });
+         function loadBieuDo () {
+            var data = $('#idThang').val();
+           // var thang = ViewBag.idThang;
+            $.get('/HieuXuatCV/loadDGThangLamViec?TimKiemThang=' + data, function (resp) {
+                console.log(resp.dataList);
+                luoiDo(resp.dataList);
+            });
+            // DuLieuNhanSu(data);
+        };
+        function luoiDo(listdata) {
+            //var lsLable = ;
+            //$.each(listdata, function (index, item) {
+            //    lsLable.push(`"year": ${item.tenNSu}, "soGio": ${item.tongTG}, "tbHoanThanh": ${item.TBThang},`)
+            //});
+            //console.log(lsLable);
+            am5.ready(function () {
+
+                // Create root element
+                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                var root = am5.Root.new("chartdiv");
+
+
+                // Set themes
+                // https://www.amcharts.com/docs/v5/concepts/themes/
+                root.setThemes([
+                    am5themes_Animated.new(root)
+                ]);
+
+
+                // Create chart
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                    panX: false,
+                    panY: false,
+                    wheelX: "panX",
+                    wheelY: "zoomX",
+                    layout: root.verticalLayout
+                }));
+
+
+                // Add legend
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+                var legend = chart.children.push(
+                    am5.Legend.new(root, {
+                        centerX: am5.p50,
+                        x: am5.p50
+                    })
+                );
+                var data = listdata;
+                console.log(data);
+
+
+                // Create axes
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                    categoryField: "year",
+                    renderer: am5xy.AxisRendererX.new(root, {
+                        cellStartLocation: 0.1,
+                        cellEndLocation: 0.9
+                    }),
+                    tooltip: am5.Tooltip.new(root, {})
+                }));
+
+                xAxis.data.setAll(data);
+
+                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                    renderer: am5xy.AxisRendererY.new(root, {})
+                }));
+
+
+                // Add series
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                function makeSeries(name, fieldName) {
+                    var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                        name: name,
+                        xAxis: xAxis,
+                        yAxis: yAxis,
+                        valueYField: fieldName,
+                        categoryXField: "year"
+                    }));
+
+                    series.columns.template.setAll({
+                        tooltipText: "{name}, {categoryX}:{valueY}",
+                        width: am5.percent(90),
+                        tooltipY: 0
+                    });
+
+                    series.data.setAll(data);
+
+                    // Make stuff animate on load
+                    // https://www.amcharts.com/docs/v5/concepts/animations/
+                    series.appear();
+
+                    series.bullets.push(function () {
+                        return am5.Bullet.new(root, {
+                            locationY: 0,
+                            sprite: am5.Label.new(root, {
+                                text: "{valueY}",
+                                fill: root.interfaceColors.get("alternativeText"),
+                                centerY: 0,
+                                centerX: am5.p50,
+                                populateText: true
+                            })
+                        });
+                    });
+
+                    legend.data.push(series);
+                }
+
+                makeSeries("Số giờ làm việc", "soGio");
+                makeSeries("Trung bình hoàn thành ", "tbHoanThanh");
+                // Make stuff animate on load
+                // https://www.amcharts.com/docs/v5/concepts/animations/
+                chart.appear(1000, 100);
+
+            }); // end am5.ready()
+        }
+                //function DuLieuNhanSu(thang) {
+                //    $.ajax({
+                //        url: `../HieuXuatCV/LoadDGThang?TimKiemThang= ${thang}`,
+                //           type: 'Get',
+                //           dataType: 'JSON',
+                //           contentType: 'application/json; charset-utf-8',
+                //           success: (data) => {
+                //               if (data.status) {
+                //                   var str = "";
+                //                   var giatri = 0;
+                //                   $('#LoadDGNhanSu').empty();
+                //                   $.each(data.dataList, (i, item) => {
+                //                       str += `<tr>`;
+                //                       str+=`<td style="border: 1px solid black">${i}</td>
+                //                        <td style="border: 1px solid black">${item.tenNS}</td>
+                //                        <td style="border: 1px solid black">${item.tbHoanThanh}</td>
+                //                        <td style="border: 1px solid black">${item.XepLoai}</td>
+                //                        <td style="border: 1px solid black">${item.NhanXetCaThang}</td>`
+                //                       str += `<\tr>`;
+                //                   });
+                //                   $('#LoadDGNhanSu').append(str);
+                //                   console.log(data.dataList2);
+                //               }
+                //           },
+                //           error: (err) => {
+                //               console.log(err);
+                //           }
+
+                //       });
+                //    }
+
+    </script>
+}

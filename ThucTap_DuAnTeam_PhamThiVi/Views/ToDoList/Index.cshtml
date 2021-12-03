@@ -1,0 +1,201 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities db = new ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities();
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/todolist.js"></script>
+<div style="float:right;margin-top:-60px">
+    @if (Session["MaBP"].ToString() == "null" || Session["MaBP"].ToString() == "2")
+    {
+        <a href="#" class="btn btn-danger" onclick="themToDolist()"><i class="fas fa-plus-circle"></i>&ensp;Thêm </a>
+        <button type="button" class="btn btn-danger"><i class="fas fa-times"></i>&ensp;Xóa</button>
+        <button type="button" class="btn btn-danger"><i class="fas fa-file-signature"></i>&ensp;Lưu</button>
+    }
+    else
+    {
+       
+    }
+
+</div>
+<div style="border: 1px solid black;margin-top: 80px; padding-top:15px; padding-right:10px" class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1" style="padding-top:5px;">
+            <h6>Nội dung</h6>
+        </div>
+        <div class="col-lg-4">
+            <input type="text" class="form-control" id="noiDung" />
+        </div>
+        <div class="col-lg-1" style="padding-top:5px">
+            <h6>Người thực hiện</h6>
+        </div>
+        <div class="col-lg-3">
+            <select class="form-select" aria-label="Default select example" id="idNguoiDung">
+                @{
+                    int? ma = (int?)Session["MaDuAn"];
+                    var duAn = db.DUANTHAMGIAs.Where(s => s.idDuAn == ma).ToList();
+                    foreach (var item2 in duAn)
+                    {
+                        <option value="@item2.NGUOIDUNG.idNguoiDung ">@item2.NGUOIDUNG.HoDemND  @item2.NGUOIDUNG.TenND</option>
+
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-lg-1" style="padding-top:5px">
+            <h6>Trễ từ</h6>
+        </div>
+        <div class="col-lg-1">
+            <input type="number" class="form-control" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-1" style="padding-top:5px">
+            <h6>Đến hạn</h6>
+        </div>
+        <div class="col-lg-2">
+            <input type="date" style="width: 100%" class="form-control" id="NgayBatDau">
+        </div>
+        <div class="col-lg-2">
+            <input type="date" style="width: 100%" class="form-control" id="NgayBatDau">
+        </div>
+        <div class="col-lg-1">
+            <h6>Trạng thái</h6>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                <label class="form-check-label" for="inlineRadio1">Tất cả</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                <label class="form-check-label" for="inlineRadio2">Xong</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                <label class="form-check-label" for="inlineRadio2">Chưa xong</label>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <button type="button" class="btn btn-danger" onclick="timKiemToDoList()"><i class="fas fa-search"></i>&ensp;Tìm </button>
+        </div>
+
+    </div>
+    <br />
+</div>
+<table class="table " style="margin-top:40px">
+    <thead>
+        <tr>
+            <th><input type="checkbox" /></th>
+            <th>STT</th>
+            <th>Nội dung To-Do</th>
+            <th>Người thực hiện</th>
+            <th>Thời hạn</th>
+            <th>Đến hạn</th>
+            <th>Ngày giao</th>
+            <th>Ghi chú</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody id="loadTodolist">
+    </tbody>
+</table>
+
+<!-- The Modal -->
+<div class="modal" id="toDoList" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLablePhoto">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <input hidden id="idThangLV" value="" />
+            <!-- Modal Header -->
+            <div class="modal-header" style="background:#00ff90">
+                <h4 class="modal-title" id="truongHop">THÊM TO DO LIST</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label>Nội dung <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" id="NoiDung">
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label>Người thực hiện <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-5">
+                                <select class="form-control" style="width: 100%" id="loadNguoiDung"> </select>
+                            </div>
+                        </div>
+
+
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label>Ngày Giao<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="date" style="width: 100%" class="form-control" id="NgayGiao">
+                            </div>
+                            <div class="col-lg-2">
+                                <span style="color:red">Đến hạn *</span>
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="date" style="width: 100%" class="form-control" id="NgayDenHan">
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label>Ghi chú </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="text" style="width: 100%" class="form-control" id="GhiChu">
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label>Trạng thái </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="TrangThaiChuaXong" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">Chưa xong</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="TrangThaiXong" value="option2">
+                                    <label class="form-check-label" for="inlineRadio2">Xong</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="ThemToDoList()">Lưu & Thêm</button>
+                <button class="btn btn-success" onclick="suaThangLamViec()">Lưu & đóng</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

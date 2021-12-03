@@ -1,0 +1,146 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PHẠM T.VI- ASC TASK PLANNING</title>
+    <link href="~/fonts/index.css" rel="stylesheet" />
+    @*ICON*@
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <!-- Load Bootstrap -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+          crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+            integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @*<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>*@
+</head>
+<body>
+    <div class="container-fluid" style="padding-top:15px">
+        <div class="row">
+            <div class="col-1">
+                <img src="https://cdn.mywork.com.vn/company-logo-medium/122018/8sIvXC7hWSOxyr6assUelJCWWIIa1L4PInEa5OR8.png" style="height: 60px;" />
+            </div>
+            <div class="col-2" style="padding-top:10px">
+                <h6>ASC<br /> TASK PLANNING</h6>
+            </div>
+            <div class="col-7" style="text-align:center">
+                <h3>
+                    DỰ ÁN @if (Session["DuAn"] != null)
+                    {
+                        <span style="color:blue; font-size: 40px">
+                            "@Session["DuAn"]"
+                        </span>
+                    }
+                </h3>
+            </div>
+            <div class="col-2">
+                <div class="dropdown">
+                    <p type="button"
+                       class="dropdown-toggle"
+                       data-toggle="dropdown">
+                        <i class="fas fa-user-circle" style="font-size:25px;"></i>
+                        @if (Session["tenTaiKhoan"] != null)
+                        {
+                            <span>@Session["tenTaiKhoan"]</span>
+                        }
+
+
+                    </p>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item-text">
+                            <a href="#"> Hồ sơ người dùng</a>
+                        </div>
+                        <div class="dropdown-item-text">
+                            <a href="#">Đổi mật khẩu</a>
+                        </div>
+                        @if (Session["TaiKhoan"] != null)
+                        {
+                            <div class="dropdown-item-text">
+                                <a href="@Url.Action("ThamGiaDuAnTheoND", "DuAnThamGia")">Chuyển dự án </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="dropdown-item-text">
+                                <a href="@Url.Action("ALLDuAn", "Home")">Chuyển dự án </a>
+                            </div>
+                        }
+
+                        <div class="dropdown-item-text">
+                            <a href="@Url.Action("dangNhap", "Home")">Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="padding-top:10px">
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="@Url.Action("Index", "TienDoCVTuan")"><i class="fas fa-home" style="font-size: 20px; color:black;"></i>&ensp;Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "QuanLyNguoiDung")">Quản lý người dùng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("tienDoCongViec", "TienDoCongViec", new { MaDuAn = Session["MaDuAn"] })">Tuần làm việc</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "QuanLyCongViec", new { MaDuAn = Session["MaDuAn"] })">Quản lý công việc</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "ToDoList")">To-do list</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "HieuXuatCV")">Báo cáo hiện suất công việc</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "PhanBoCongViec")">Phân bổ công việc </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="container-fluid">
+        @RenderBody()
+    </div>
+    <footer class="container-fluid">
+        <hr />
+        <div class="row">
+            <div class="col-3">
+                <span style="text-align:left;">&ensp;<i class="fas fa-calendar-check" style="font-size:24px"></i>&ensp;@DateTime.Now</span>
+            </div>
+            <div class="col-6" style="text-align:center;">
+                <span>Copyright © 2021</span>
+            </div>
+            <div class="col-3" style="text-align:right;">
+                <span>Designed by <img src="https://cdn.mywork.com.vn/company-logo-medium/122018/8sIvXC7hWSOxyr6assUelJCWWIIa1L4PInEa5OR8.png" style="width:15%" /></span>
+            </div>
+        </div>
+    </footer>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

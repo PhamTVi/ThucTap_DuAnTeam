@@ -1,0 +1,248 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities db = new ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities();
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/nguoidung.js"></script>
+@if (Session["MaBP"].ToString() != "null")
+{
+    <h1>Trang này không giành cho bạn</h1>
+}
+else
+{
+    <div style="float:right;margin-top:-60px">
+        <button class="btn btn-danger" onclick="ThemNguoiDung()"><i class="fas fa-plus-circle"></i>&ensp;Thêm </button>
+        <button type="button" class="btn btn-danger"><i class="fas fa-times"></i>&ensp;Xóa</button>
+    </div>
+    <div style="border: 1px solid black; height: 70px; margin-top: 80px; padding-top:15px" class="container-fluid; ">
+        <div class="row">
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Họ và tên</h6>
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <input type="text" class="form-control" />
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Tên đăng nhập</h6>
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <input type="text" class="form-control" />
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Dự án</h6>
+            </div>
+            <div class="col-lg-2">
+                <select class="form-select" aria-label="Default select example">
+                    @{
+                        var duAn = db.DUANs.ToList();
+                        foreach (var item2 in duAn)
+                        {
+                            <option value="@item2.idDuAn">@item2.TenDuAn</option>
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Vai trò</h6>
+            </div>
+            <div class="col-lg-1">
+                <select class="form-select" aria-label="Default select example">
+                    @{
+                        var boPhan = db.BOPHANs.ToList();
+                        foreach (var item2 in boPhan)
+                        {
+                            <option value="@item2.idBoPhan">@item2.TenBP</option>
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Trạng Thái</h6>
+            </div>
+            <div class="col-lg-1">
+                <select class="form-select" aria-label="Default select example">
+                    <option value="True">Hoạt động</option>
+                    <option value="False">Vô hiệu hóa</option>
+                </select>
+            </div>
+            <div class="col-lg-1">
+                <button type="button" class="btn btn-danger"><i class="fas fa-search"></i>&ensp;Tìm </button>
+            </div>
+        </div>
+    </div>
+    <table class="table " style="margin-top:40px">
+        <thead>
+            <tr>
+                <th><input type="checkbox" /></th>
+                <th>Họ đệm</th>
+                <th>Tên</th>
+                <th>Tên đăng nhập</th>
+                <th>Đang hoạt động</th>
+                <th>Dự án</th>
+                <th>Vai trò</th>
+                <th>Sửa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var nd = db.NGUOIDUNGs.ToList();
+                foreach (var item2 in nd)
+                {
+                    <tr style="background-color: #f3e5e5;">
+                        <td><input type="checkbox" /></td>
+                        <td>@item2.HoDemND</td>
+                        <td>@item2.TenND</td>
+                        <td>@item2.TenDangNhap</td>
+                        @if (item2.TrangThai == true)
+                        {
+                            <td><input type="checkbox" checked /></td>
+                        }
+                        else
+                        {
+                            <td><input type="checkbox" /></td>
+                        }
+                        <td></td>
+                        <td></td>
+                        <td><a href="#"><i class="fas fa-edit"></i></a></td>
+                    </tr>
+
+                        var duAnThamGia = db.DUANTHAMGIAs.Where(s => s.idNguoiDung == item2.idNguoiDung).ToList();
+                        foreach (var item in duAnThamGia)
+                        {
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                  <td id="@item.DUAN.idDuAn">@item.DUAN.TenDuAn</td>
+                                    <td id="@item.BOPHAN.idBoPhan">@item.BOPHAN.TenBP</td>
+                                <td></td>
+                            </tr>
+                            <tr></tr>
+                        }
+                }
+            }
+        </tbody>
+    </table>
+}
+<!-- The Modal -->
+<div class="modal" id="themnguoiDung" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLablePhoto">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <input hidden id="" value="" />
+            <!-- Modal Header -->
+            <div class="modal-header" style="background:#00ff90">
+                <h4 class="modal-title" id="truongHop">THÊM NGƯỜI DÙNG</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Họ điệm <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" id="hoTenDem">
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Tên <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" id="tenND">
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Tên đăng nhập <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" style="width: 100%" class="form-control" id="tenDangNhap">
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label>Cập nhật mật khẩu<span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="checkbox" />
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Mật khẩu <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" id="MatKhau">
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Xác nhận <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input type="text" class="form-control" id="XacNhanMK">
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Trạng thái </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="TrangThaiChuaXong" value="option1">
+                                    <label class="form-check-label" for="inlineRadio1">Hoạt động</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="TrangThaiXong" value="option2">
+                                    <label class="form-check-label" for="inlineRadio2">Vô hiệu</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <h6>Dự án tham gia</h6>
+                        <table class="table table-striped" style="margin-top:40px">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Dự án tham gia</th>
+                                    <th>Member</th>
+                                    <th>Leader</th>
+                                    <th>Admin</th>
+                                </tr>
+                            </thead>
+                            <tbody id="LoadTatCaDuAn">
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="themNguoiDung()">Lưu & Thêm</button>
+                <button class="btn btn-success" onclick="suaThangLamViec()">Lưu & đóng</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+

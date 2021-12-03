@@ -1,0 +1,515 @@
+﻿@model ThucTap_DuAnTeam_PhamThiVi.Models.DUAN
+@using ThucTap_DuAnTeam_PhamThiVi.Models
+@{
+    ViewBag.Title = "Index";
+    var lst = ViewData["todoList"] as List<TODOLIST>;
+    var tracuu = ViewData["tracuu"] as List<NGUOIDUNG>;
+    var lstCVTuan = ViewData["lstCVTuan"] as List<CONGVIECTUAN>;
+    var lstNV = ViewData["lstNV"] as List<int?>;
+    var dsNV = ViewData["lstNV2"] as List<NGUOIDUNG>;
+    var dgNV = ViewData["DanhGiaNS"] as List<DGNHANSUTHEOTUAN>;
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    var soLuong = 0;
+    var dsModule = ViewData["dsModule"] as List<MODULE>;
+    ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities db = new ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities();
+
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="~/Scripts/quanlycongviec.js"></script>
+<div style="float:right;margin-top:-60px">
+    <a href="#" class="btn btn-danger" onclick="ThemCongViec()"><i class="fas fa-plus-circle"></i>&ensp;Thêm </a>
+    <button type="button" class="btn btn-danger"><i class="fas fa-times"></i>&ensp;Xóa</button>
+    <button type="button" class="btn btn-danger"><i class="fas fa-file-signature"></i>&ensp;Lưu</button>
+    <button type="button" class="btn btn-danger"><i class="fas fa-file-signature"></i>&ensp;Duyệt kế hoạch</button>
+    <button type="button" class="btn btn-danger"><i class="fas fa-file-signature"></i>&ensp;Khóa/Mở Tuần</button>
+    <button type="button" class="btn btn-danger"><i class="fas fa-file-signature"></i>&ensp;Đơi công việc</button>
+    <button type="button" class="btn btn-danger"><i class="fas fa-file-signature"></i>&ensp;Xuất excel</button>
+</div>
+<div style="border: 1px solid black;margin-top: 80px; padding-top:15px; padding-right:10px" class="container-fluid">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-lg-1" style="padding-top:5px;">
+                <h6>Tháng</h6>
+            </div>
+            <div class="col-lg-2">
+                <select class="form-select" aria-label="Default select example" id="maThang" onclick="loadTuanLamViec('#loadTuan')">
+
+                    @{
+                        var duAn = db.THANGLAMVIECs.Where(sp => sp.idDuAn == Model.idDuAn).ToList();
+                        foreach (var item2 in duAn)
+                        {
+                            <option value="@item2.idThang">@item2.TenThang</option>
+
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-1" style="padding-top:5px">
+                <h6>Tuần</h6>
+            </div>
+            <div class="col-lg-2">
+                <select class="form-select" aria-label="Default select example" id="loadTuan" name="TuanLamViec">
+                </select>
+            </div>
+            <div class="col-lg-3" style="padding-top: 10px">
+                <span><a href="#"><i class="fas fa-lock" style="color: #d5280a; font-size: 24px"></i></a><span> / </span><a href="#"><i class="fas fa-lock-open" style="color: #d5280a; font-size: 24px "></i></a> </span>
+            </div>
+            <div class="col-lg-1">
+                <button type="submit" class="btn btn-danger" onclick="clickTuan()"><i class="fas fa-search"></i>&ensp;Tìm </button>
+            </div>
+            <div class="col-lg-2">
+                <button type="button" class="btn btn-danger"><i class="fas fa-search"></i>&ensp;Tìm nâng cao </button>
+            </div>
+        </div>
+    }
+    <br />
+</div>
+<div style="border: 1px solid orange; padding-right:10px" class="container-fluid">
+    <div class="row" style="padding-top:5px;">
+        <div class="col-lg-3">
+            <h6><i class="fas fa-paperclip" style=" font-size: 25px"></i>Có @ViewBag.slToDo nội dung to do đang được ghim | </h6>
+        </div>
+        <div class="col-lg-8" style="padding-top:5px;">
+            <h6>Đến hạn: @ViewBag.hanDen @ViewBag.noiDung ... </h6>
+        </div>
+
+        <div class="col-lg-1" style="text-align:right">
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#collapseTodo" aria-expanded="false" aria-controls="collapseTodo">
+                <i class="fas fa-angle-double-down" style="color: yellow; font-size: 25px"></i>
+            </a>
+        </div>
+    </div>
+    @if (ViewBag.slToDo.ToString() == "0")
+    {
+
+    }
+    else
+    {
+        <div class="collapse" id="collapseTodo" style="padding-left: 15px">
+            <br />
+            <div class="row">
+
+                @foreach (TODOLIST t in lst)
+                {
+                    soLuong++;
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-3" style=" border: 2px solid #d1d0d0; text-align:center">
+                                <h5>@DateTime.Parse(t.HanDen.ToString()).ToString("dd-MM")</h5>
+                                <p style="padding-top: 10px">
+                                    @if ((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days < 0)
+                                    {
+                                        <span style="border: 1px solid red; text-align:center;background: #f4bb89; color: red; padding: 1px 10px">Trễ @((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days*-1) Ngày</span>
+                                    }
+                                    else if ((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days > 0)
+                                    {
+                                        <span style="border: 1px solid #0033FF; text-align: center; background: #f4bb89; color: #0033FF; padding: 1px 10px ">
+                                            còn @((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days) Ngày
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="border: 1px solid #006600; text-align: center; background: #f4bb89; color: #006600; padding: 1px 10px ">
+                                            Hôm nay
+                                        </span>
+                                    }
+                                </p>
+
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    @if (t.NoiDung.Length > 70)
+                                    {
+                                        <div class="col-lg-10">
+                                            <h6>@soLuong. @t.NoiDung.Substring(70) ...</h6>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-lg-10">
+                                            <h6>@soLuong. @t.NoiDung</h6>
+                                        </div>
+                                    }
+
+                                    <div class="col-lg-2">
+                                        <button>Xong</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <h6 style="color: cornflowerblue">@t.NGUOIDUNG.TenND</h6>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <span style="color: #9a8d8d"> Ngày giao: @DateTime.Parse(t.NgayGiao.ToString()).ToString("dd/mm")</span>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <span style="color: #9a8d8d"> Ghi chú: @t.GhiChu</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+
+                }
+            </div>
+        </div>
+    }
+
+</div>
+<table class="table " style="margin-top:40px">
+    <thead>
+        <tr>
+            <th><input type="checkbox" /></th>
+            <th>Module</th>
+            <th>Issue URL</th>
+            <th width="16%">Tên công việc</th>
+            <th>Nguồn gốc</th>
+            <th width="6%">T.Gian</th>
+            <th width="6%">Từ Ngày</th>
+            <th  width="6%">Đến Ngày</th>
+            <th>Trạng thái</th>
+            <th>Ghi Chú</th>
+            <th>Sửa</th>
+        </tr>
+    </thead>
+    @*tue sua o day*@
+    <tbody>
+        @if (lstNV != null)
+        {
+            foreach (int nv in lstNV)
+            {
+                <tr style="background:antiquewhite">
+                    <td colspan="11">
+                        <div class="row">
+                            <div class="col-lg-2"><h6>DEV: @dsNV.Where(t => t.idNguoiDung == nv).FirstOrDefault().TenND</h6></div>
+                            @if (@lstCVTuan.Where(t => t.idNguoiDung == nv).Sum(time => time.ThoiGianLam) == 40)
+                            {
+                                <div class="col-lg-4"><span>TỔNG THỜI GIAN (giờ): <span style="color:blue">@lstCVTuan.Where(t => t.idNguoiDung == nv).Sum(time => time.ThoiGianLam)</span></span> </div>
+
+                            }
+                            else
+                            {
+                                <div class="col-lg-4"><span>TỔNG THỜI GIAN (giờ): <span style="color:red">@lstCVTuan.Where(t => t.idNguoiDung == nv).Sum(time => time.ThoiGianLam)</span></span> </div>
+
+                            }
+                            @if (@dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh < 60 && @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh > 0)
+                            {
+                                <div class="col-lg-4"><span>MỨC ĐỘ HOÀN THÀNH: <span style="background:red"> @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh %</span></span></div>
+                            }
+                            else if (@dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh > 60 && @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh < 74)
+                            {
+                                <div class="col-lg-4"><span>MỨC ĐỘ HOÀN THÀNH: <span style="background:#f17513"> @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh %</span></span></div>
+
+                            }
+                            else if (@dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh > 75 && @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh < 89)
+                            {
+                                <div class="col-lg-4"><span>MỨC ĐỘ HOÀN THÀNH: <span style="background:Yellow"> @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh %</span></span></div>
+
+                            }
+                            else
+                            {
+                                <div class="col-lg-4"><span>MỨC ĐỘ HOÀN THÀNH: <span style="background:#43a10e"> @dgNV.Where(y => y.idNguoiDung == nv).FirstOrDefault().HoanThanh %</span></span></div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+
+                foreach (CONGVIECTUAN cvt in lstCVTuan.Where(t => t.idNguoiDung == nv ).ToList())
+                {
+                    using (Html.BeginForm("SuaCVT", "QuanLyCongViec"))
+                    {
+                        
+                        <tr>
+                            <td><input type="checkbox" /><input hidden type="text" value="@cvt.idCongViecTuan" name="idCVT" /></td>
+                            <td>
+                                <input hidden name="idThang" value="@cvt.TUANLAMVIEC.idThang"/>
+                                <input hidden name="idNguoiDung" value="@nv"/>
+                                <select class="form-control" style="width: 100%" name="module">
+                                    @foreach (MODULE md in dsModule)
+                                    {
+                                        if (md.idModule != cvt.idModule)
+                                        {
+                                            <option value="@md.idModule">@md.TenModule</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@md.idModule" selected>@md.TenModule</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td><input type="text" name="url"  class="form-control" />@cvt.Urllssue</td>
+                            <td><input name="TenCongViec"  class="form-control" value="@cvt.TenCongViec"/></td>
+
+                            <td>
+                                <select class="form-control" style="width: 100%" name="Nguon">
+                                    @if (cvt.Nguon == "Tạo mới")
+                                    {
+                                        <option value="@cvt.Nguon" selected>@cvt.Nguon</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Tạo mới">Tạo mới</option>
+                                    }
+
+                                    @if (cvt.Nguon == "Dời do trễ")
+                                    {
+                                        <option value="@cvt.Nguon" selected>@cvt.Nguon</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Dời do trễ">Dời do trễ</option>
+                                    }
+
+                                    @if (cvt.Nguon == "Dời do đột xuất")
+                                    {
+                                        <option value="@cvt.Nguon" selected>@cvt.Nguon</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Dời do đột xuất">Dời do đột xuất</option>
+                                    }
+                                </select>
+                            </td>
+
+                            <td><input type="number" name="ThoiGianLam" min="0" class="form-control" value="@cvt.ThoiGianLam" /></td>
+                            <td><input type="date" name="NgayBD" class="form-control" value="@DateTime.Parse(cvt.NgayBD.ToString()).ToString("yyyy-MM-dd")" /></td>
+                            <td><input type="date" name="NgayKT" class="form-control" value="@DateTime.Parse(cvt.NgayKT.ToString()).ToString("yyyy-MM-dd")" /></td>
+                            <td>
+                                <select class="form-control" style="width: 100%" name="TrangThai">
+                                    @if (cvt.TrangThai == "Chưa làm")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Chưa làm">Chưa làm</option>
+                                    }
+
+                                    @if (cvt.TrangThai == "Đã xong")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Đã xong">Đã xong</option>
+                                    }
+
+                                    @if (cvt.TrangThai == "Đã xong (Task đột xuất)")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Đã xong (Task đột xuất)">Đã xong (Task đột xuất)</option>
+                                    }
+
+                                    @if (cvt.TrangThai == "Chưa xong")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Chưa xong">Chưa xong</option>
+                                    }
+
+                                    @if (cvt.TrangThai == "Chưa xong (bận task khác) - CHƯA duyệt")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Chưa xong (bận task khác) - CHƯA duyệt">Chưa xong (bận task khác) - CHƯA duyệt</option>
+                                    }
+
+                                    @if (cvt.TrangThai == "Chưa xong (bận task khác) - ĐÃ duyệt")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Chưa xong (bận task khác) - ĐÃ duyệt">Chưa xong (bận task khác) - ĐÃ duyệt</option>
+                                    }
+
+                                    @if (cvt.TrangThai == "Vắng")
+                                    {
+                                        <option value="@cvt.TrangThai" selected>@cvt.TrangThai</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Vắng">Vắng</option>
+                                    }
+                                </select>
+                            </td>
+                            <td><input type="text" name="GhiChu" class="form-control" value="@cvt.GhiChu" /></td>
+                            <td><button type="submit"><i class="fas fa-edit"></i></button></td>
+                        </tr>
+                    }
+                }
+            }
+        }
+
+    </tbody>
+</table>
+
+<!-- The Modal -->
+<div class="modal" id="themconviec" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLablePhoto">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <input hidden id="idThangLV" value="" />
+            <!-- Modal Header -->
+            <div class="modal-header" style="background:#00ff90">
+                <h4 class="modal-title" id="truongHop">THÊM CÔNG VIỆC TUẦN</h4>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Nhân sự <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-control" style="width: 100%" id="loadNguoiDung"> </select>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Tháng <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+
+                                <select class="form-control" style="width: 100%" id="loadThang" onclick="loadTuanLamViec2('#LoadTuan')"></select>
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Tuần <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-control" style="width: 100%" id="LoadTuan"> </select>
+                            </div>
+                        </div>
+
+                        <hr />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Module </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-control" style="width: 100%" id="LoadModule"> </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Nguồn </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-select" aria-label="Default select example" id="Nguon">
+                                    <option value="Tạo mới">Tạo mới</option>
+                                    <option value="Dời đột xuất">Dời đột xuất</option>
+                                    <option value="Dời do trễ">Dời do trễ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Tên issue </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" style="width: 100%" id="TenIssue" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Url issue </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="text" style="width: 100%" id="UrlIssue" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Tên công việc <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-9">
+                                <textarea class="form-control" style="width: 100%" id="TenCongVuec"></textarea>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Thời gian làm (giờ) <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="number" style="width: 100%" id="ThoiGianLam" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Trạng thái <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <select class="form-select" aria-label="Default select example" id="TinhTrang">
+                                    <option value="Chưa Làm">Chưa Làm</option>
+                                    <option value="Đã xong">Đã xong</option>
+                                    <option value="Vắng">Vắng</option>
+                                    <option value="Chưa xong">Chưa xong</option>
+                                    <option value="Dời qua tuần sau">Dời qua tuần sau</option>
+                                    <option value="Đã xong (Tasck đột xuất)">Đã xong (Tasck đột xuất)</option>
+                                    <option value="Chưa xong (Bận Tasck khác) - Chưa Duyệt">Chưa xong (Bận Tasck khác) - Chưa Duyệt</option>
+                                    <option value="Chưa xong (Bận Tasck khác) - Đã Duyệt">Chưa xong (Bận Tasck khác) - Đã Duyệt</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Từ ngày <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="date" style="width: 100%" id="TuNgay" />
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Đến ngày <span style="color:red">*</span></label>
+                            </div>
+                            <div class="col-lg-4">
+                                <input class="form-control" type="date" style="width: 100%" id="DenNgay" />
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label>Ghi chú </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input class="form-control" type="tel" style="width: 100%" id="GhiChu" />
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-success" onclick="themCongViecTuan()">Lưu & Thêm</button>
+                <button class="btn btn-success" onclick="suaThangLamViec()">Lưu & đóng</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+            </div>
+
+        </div>
+    </div>
+</div>

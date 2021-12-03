@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="df84c4d8f17f4315a70287bcc1098345" Name="Diagram1">
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.BOPHAN" Width="1.5" PointX="3.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.CONGVIECTUAN" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.DGNHANSUTHEOTHANG" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.DGNHANSUTHEOTUAN" Width="1.5" PointX="6" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.DUAN" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.DUANTHAMGIA" Width="1.5" PointX="6" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.MODULE" Width="1.5" PointX="0.75" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.NGUOIDUNG" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.THANGLAMVIEC" Width="1.5" PointX="1.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.TODOLIST" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TASK_THUCTAPModel.TUANLAMVIEC" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DUANTHAMGIA_BOPHAN" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_CONGVIECTUAN_MODULE" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_CONGVIECTUAN_NGUOIDUNG" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_CONGVIECTUAN_TUANLAMVIEC" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DGNHANSUTHEOTHANG_NGUOIDUNG" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DGNHANSUTHEOTHANG_THANGLAMVIEC" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DGNHANSUTHEOTUAN_NGUOIDUNG" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DGNHANSUTHEOTUAN_TUANLAMVIEC" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DUANTHAMGIA_DUAN" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_THANGLAMVIEC_DUAN" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_TODOLIST_DUAN" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_DUANTHAMGIA_NGUOIDUNG" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_TODOLIST_NGUOIDUNG" ManuallyRouted="false" />
+        <AssociationConnector Association="TASK_THUCTAPModel.FK_TUANLAMVIEC_THANGLAMVIEC" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

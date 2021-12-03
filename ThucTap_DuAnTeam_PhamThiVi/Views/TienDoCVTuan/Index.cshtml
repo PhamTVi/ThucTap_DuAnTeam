@@ -1,0 +1,249 @@
+﻿@using ThucTap_DuAnTeam_PhamThiVi.Models
+@{
+    var lst = ViewData["todoList"] as List<TODOLIST>;
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    var soLuong = 0;
+}
+<style>
+    #chartdiv {
+        width: 99%;
+        height: 500px;
+    }
+</style>
+<div class="row" style="padding-left: 15px">
+    <div class="col-lg-3" style="border: 1px solid black; ">
+        <p><h1 style="text-align:center;">TO-DO LIST <i class="fas fa-align-justify" style="float:right"></i></h1></p>
+        <hr />
+        @if (ViewBag.slToDo.ToString() == "0")
+        {
+
+        }
+        else
+        {
+            <div style="padding-left:5px;">
+                <br />
+                <div class="row">
+
+                    @foreach (TODOLIST t in lst)
+                    {
+                        soLuong++;
+                        <div class="col-lg-2">
+                            <h1 style="border: 1px solid black; background: #ecd9bc; padding:5px; width:50px; text-align:center ">@soLuong</h1>
+                        </div>
+                        <div class="col-lg-9">
+                            <p style="padding-top: 10px">
+                                @if ((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days < 0)
+                                {
+                                    <span style="border: 1px solid red; text-align:center;background: #f4bb89; color: red; padding: 1px 10px">Trễ @((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days*-1) Ngày</span>
+                                }
+                                else if ((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days > 0)
+                                {
+                                    <span style="border: 1px solid #0033FF; text-align: center; background: #f4bb89; color: #0033FF; padding: 1px 10px ">
+                                        còn @((DateTime.Parse(t.HanDen.ToString()) - DateTime.Now).Days) Ngày
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="border: 1px solid #006600; text-align: center; background: #f4bb89; color: #006600; padding: 1px 10px ">
+                                        Hôm nay
+                                    </span>
+                                }
+                                <span style="float:right; color:#808080">@DateTime.Parse(t.HanDen.ToString()).ToString("dd-MM-yyyy")</span>
+                            </p>
+                            <p>
+                                @if (t.NoiDung.Length > 70)
+                                {
+                                    <h6> @t.NoiDung.Substring(70) ...</h6>
+                                }
+                                else
+                                {
+                                    <h6>@t.NoiDung</h6>
+                                }
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-lg-9" style="border: 1px solid black; ">
+        <div class="row">
+            <div class="col-lg-4" style="text-align: center;">
+                <p><h3>Tháng 9 - 2021</h3></p>
+            </div>
+            <div class="col-lg-4" style="text-align: center;">
+                <p><h3>Tuần 1: 5/7 - 10/7</h3></p>
+            </div>
+
+            <div class="col-lg-4" style="text-align: center;">
+                <p><h3><i class="fas fa-angle-left"></i>&ensp; HÔM NAY &ensp;<i class="fas fa-angle-right"></i></h3></p>
+            </div>
+        </div>
+        <hr />
+        <br />
+        <div class="row" style="padding: 0px 25px">
+            <div class="col-lg-5" style="border-radius: 30px; background:#ecd9bc">
+                <h6 style="text-align:center">KẾ HOẠCH TEAM</h6>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><h1>81%</h1> (250 / 308 giờ)</p>
+                        <span>Tổng số giờ đã lên kế hoạch</span>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><h3>56 </h3> Tổng số task</p>
+                        <p><h3>4/7 </h3> Use đã tạo task</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2"> </div>
+            <div class="col-lg-5" style="border-radius: 30px; background:#ecd9bc">
+                <h6 style="text-align:center">TIẾN ĐỘ HOÀN TEAM</h6>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><h1>47%</h1> (250 / 308 giờ)</p>
+                        <span>Hoàn thành</span>
+                    </div>
+                    <div class="col-lg-6">
+                        <p><h3>18/56 </h3>Task xong hoặc vắng</p>
+                        <p><h3>38 </h3> Task tồn dọng</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+        <div id="chartdiv"></div>
+    </div>
+</div>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<!-- Chart code -->
+@section scripts{
+    <script>
+        $(document).ready(() => {
+            loadBieuDo();
+        });
+        function loadBieuDo() {
+           // var data = $('#idThang').val();
+            // var thang = ViewBag.idThang;
+            $.get('/TienDoCVTuan/LoadTuanCVDuAn',function (resp) {
+                console.log(resp.dataList);
+                luoiDo(resp.dataList);
+            });
+            // DuLieuNhanSu(data);
+        };
+        function luoiDo(listdata) {
+            am5.ready(function () {
+
+                // Create root element
+                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                var root = am5.Root.new("chartdiv");
+
+                // Set themes
+                // https://www.amcharts.com/docs/v5/concepts/themes/
+                root.setThemes([
+                    am5themes_Animated.new(root)
+                ]);
+
+                // Create chart
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                    panX: false,
+                    panY: false,
+                    wheelX: "none",
+                    wheelY: "none"
+                }));
+
+                // Add cursor
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+                cursor.lineY.set("visible", false);
+
+                // Create axes
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+
+                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                    maxDeviation: 0,
+                    categoryField: "name",
+                    renderer: xRenderer,
+                    tooltip: am5.Tooltip.new(root, {})
+                }));
+
+                xRenderer.grid.template.set("visible", false);
+
+                var yRenderer = am5xy.AxisRendererY.new(root, {});
+                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                    maxDeviation: 0,
+                    min: 0,
+                    extraMax: 0.1,
+                    renderer: yRenderer
+                }));
+
+                yRenderer.grid.template.setAll({
+                    strokeDasharray: [2, 2]
+                });
+
+                // Create series
+                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                    name: "Series 1",
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueYField: "value",
+                    sequencedInterpolation: true,
+                    categoryXField: "name",
+                    tooltip: am5.Tooltip.new(root, { dy: -25, labelText: "{valueY}" })
+                }));
+
+
+                series.columns.template.setAll({
+                    cornerRadiusTL: 5,
+                    cornerRadiusTR: 5
+                });
+
+                series.columns.template.adapters.add("fill", (fill, target) => {
+                    return chart.get("colors").getIndex(series.columns.indexOf(target));
+                });
+
+                series.columns.template.adapters.add("stroke", (stroke, target) => {
+                    return chart.get("colors").getIndex(series.columns.indexOf(target));
+                });
+
+                // Set data
+                var data = listdata;
+                console.log(data);
+
+                series.bullets.push(function () {
+                    return am5.Bullet.new(root, {
+                        locationY: 1,
+                        sprite: am5.Picture.new(root, {
+                            templateField: "bulletSettings",
+                            width: 50,
+                            height: 50,
+                            centerX: am5.p50,
+                            centerY: am5.p50,
+                            shadowColor: am5.color(0x000000),
+                            shadowBlur: 4,
+                            shadowOffsetX: 4,
+                            shadowOffsetY: 4,
+                            shadowOpacity: 0.6
+                        })
+                    });
+                });
+
+                xAxis.data.setAll(data);
+                series.data.setAll(data);
+
+                // Make stuff animate on load
+                // https://www.amcharts.com/docs/v5/concepts/animations/
+                series.appear(1000);
+                chart.appear(1000, 100);
+
+            }); // end am5.ready()
+        }
+    </script>
+}
+

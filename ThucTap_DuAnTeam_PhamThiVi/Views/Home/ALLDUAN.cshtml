@@ -1,0 +1,23 @@
+﻿@model IEnumerable<ThucTap_DuAnTeam_PhamThiVi.Models.DUAN>
+@{
+    ViewBag.Title = "ALLDUAN";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row" style="padding-top:50px;">
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-3 offset-md-1">
+                <div class="canBangGiua">
+                    <img src="@item.HinhAnh" class="canHinhGiua" />
+                </div>
+                <div class="tenDuAn">
+                    <h4><a href="@Url.Action("tienDoCongViec", "TienDoCongViec", new { MaDuAn = item.idDuAn })">@item.TenDuAn</a></h4>
+                </div>
+
+            </div>
+        }
+    </div>
+
+</div>
+

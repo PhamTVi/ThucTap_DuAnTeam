@@ -1,0 +1,23 @@
+﻿body {
+}
+
+.canHinhGiua {
+    width: 180px;
+    height: 180px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.canBangGiua {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.tenDuAn {
+    text-align: center;
+    width: 200px;
+    padding-top: 20px
+}

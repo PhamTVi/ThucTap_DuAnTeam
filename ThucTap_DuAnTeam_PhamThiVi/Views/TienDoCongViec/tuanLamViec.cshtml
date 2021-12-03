@@ -1,0 +1,264 @@
+﻿@model IEnumerable<ThucTap_DuAnTeam_PhamThiVi.Models.THANGLAMVIEC>
+
+@{
+    ViewBag.Title = "tuanLamViec";
+    Layout = "~/Views/Shared/_layout2.cshtml";
+    ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities db = new ThucTap_DuAnTeam_PhamThiVi.Models.TASK_THUCTAPEntities();
+}
+<style type="text/css">
+    a[disabled="disabled"] {
+        pointer-events: none;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="~/Scripts/tiendocongviec.js"></script>
+<div style="float:right;margin-top:-60px">
+
+    @if (Session["MaBP"].ToString() == "null")
+    {
+        <button class="btn btn-danger" onclick="ThemTienDo()"><i class="fas fa-plus-circle"></i>&ensp;Thêm </button>
+        <button type="button" class="btn btn-danger"><i class="fas fa-times"></i>&ensp;Xóa</button>
+        <button type="button" class="btn btn-danger"><i class="fas fa-lock"></i>&ensp;Khóa kế hoạch</button>
+    }
+    else
+    {
+       
+    }
+
+</div>
+<div style="border: 1px solid black; height: 70px; margin-top: 80px; padding-top:15px" class="container-fluid; ">
+    @using (Html.BeginForm("tuanLamViec", "TienDoCongViec", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-lg-1" style="text-align:center;padding-top:5px;">
+                <h6>Tháng</h6>
+            </div>
+            <div class="col-lg-4">
+                <select class="form-select" aria-label="Default select example" style="width: 300px" name="TimKiemThang">
+                    @{
+                        int maDAn = ViewBag.maDAn;
+                        var duAn = db.THANGLAMVIECs.Where(s => s.idDuAn == maDAn).ToList();
+                        foreach (var item2 in duAn)
+                        {
+                            <option value="@item2.TenThang">@item2.TenThang</option>
+
+                        }
+                        <option value="">ALL</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-danger"><i class="fas fa-search"></i>&ensp;Tìm </button>
+            </div>
+        </div>
+    }
+    </div>
+    <table class="table " style="margin-top:40px">
+    <thead>
+        <tr>
+            <th><input type="checkbox" /></th>
+            <th>Giá trị</th>
+            <th>Tháng</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Tuần</th>
+            <th>STT Tuần</th>
+            <th>Từ ngày</th>
+            <th>Đến ngày</th>
+            <th>Số giờ làm</th>
+            <th>Đã khóa</th>
+            <th>Sửa</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+
+            foreach (var item2 in Model)
+            {
+                var giaTri = "'" + item2.GiaTri + "'";
+                <tr style="background-color: #f3e5e5;">
+                    <td><input type="checkbox" /></td>
+                    <td>@item2.GiaTri</td>
+                    <td>@item2.TenThang</td>
+                    <td>@DateTime.Parse(item2.NgayBDLam.ToString()).ToString("dd-MM")</td>
+                    <td>@DateTime.Parse(item2.NgayKTLam.ToString()).ToString("dd-MM")</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    @if (Session["MaBP"].ToString() == "null")
+                    {
+                        <td><a href="#" onclick="hienThiChinhSuaThangLam(@giaTri)"><i class="fas fa-edit"></i></a></td>
+                    }
+                    else
+                    {
+                        <td><a href="#" onclick="hienThiChinhSuaThangLam(@giaTri)" disabled="disabled"><i class="fas fa-edit"></i></a></td>
+                    }
+                </tr>
+
+                {
+                    var tuanLV = db.TUANLAMVIECs.Where(s => s.idThang == item2.idThang).ToList();
+                    foreach (var item in tuanLV)
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@item.TenTuan</td>
+                            <td>@item.STTTuan</td>
+                            <td>@DateTime.Parse(item.NgayBD.ToString()).ToString("dd-MM")</td>
+                            <td>@DateTime.Parse(item.NgayKT.ToString()).ToString("dd-MM")</td>
+                            <td>@item.SoGioLamViec</td>
+                            @if (Session["MaBP"].ToString() == "null")
+                            {
+
+                                if (item.TrangThai == true)
+                                {
+                                    var maTuan = "'" + item.STTTuan + "'";
+                                    var maThangLV = "'" + item2.GiaTri + "'";
+                                    <td><input type="checkbox" id="trangThai" onclick="suaTuanLamViec(@maTuan, @maThangLV)" /></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" id="trangThai" checked /></td>
+                                }
+                            }
+                            else
+                            {
+                                if (item.TrangThai == true)
+                                {
+                                    var maTuan = "'" + item.STTTuan + "'";
+                                    var maThangLV = "'" + item2.GiaTri + "'";
+                                    <td><input type="checkbox" id="trangThai" onclick="suaTuanLamViec(@maTuan, @maThangLV)" disabled /></td>
+                                }
+                                else
+                                {
+                                    <td><input type="checkbox" id="trangThai" checked disabled /></td>
+                                }
+                            }
+                            <td></td>
+                        </tr>
+                        <tr></tr>
+
+                    }
+                }
+            }
+        }
+    </tbody>
+    @*<tbody id="loadAllThangLamViec">
+
+        </tbody>*@
+    </table>
+
+    <!-- The Modal -->
+    <div class="modal" id="themtiendo" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLablePhoto">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <input hidden id="idThangLV" value="" />
+                <!-- Modal Header -->
+                <div class="modal-header" style="background:#00ff90">
+                    <h4 class="modal-title" id="truongHop">THÊM TUẦN LÀM VIỆC</h4>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>Tên tháng <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-lg-5">
+                                    <input type="text" class="form-control" id="ThangLV">
+                                </div>
+                                <div class="col-lg-1">
+
+                                </div>
+                                <div class="col-lg-1">
+                                    <label>Năm </label>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="number" class="form-control" id="NamLV">
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>Ngày bắt đầu <span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="date" style="width: 100%" class="form-control" name="NgayBatDau" id="NgayBatDau">
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-9">
+                                    <label><span style="color:red">* Ngày bắt đầu nên là ngày thứ hai đầu tiên của tháng</span></label>
+                                </div>
+                            </div>
+
+                            <br />
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>Ngày kết thúc<span style="color:red">*</span></label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="date" style="width: 100%" class="form-control" name="NgayKetThuc" id="NgayKetThuc">
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-9">
+                                    <label><span style="color:red">* Ngày kết thúc nên là ngày của thứ sáu (hoặc bảy) của tuần cuối cùng (trong cùng tháng hoặc tháng tiếp theo)</span></label>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>Giá trị tháng </label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input hidden id="idThang" />
+                                    <input type="number" onclick="hienThiThangLam()"  style="width: 100px" class="form-control" id="MaThangLV" min="0">
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+
+                        <div class="form-group">
+                            <table class="table table-striped" style="margin-top:40px">
+                                <thead>
+                                    <tr>
+                                        <th>Tên tuần</th>
+                                        <th>Thứ tự</th>
+                                        <th>Từ ngày</th>
+                                        <th>Đến ngày</th>
+                                        <th>Số giờ làm</th>
+                                        <th>Đã khóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="LoadTuanLamVCTheoThang">
+                                </tbody>
+                            </table>
+                            <br />
+                        </div>
+                    </form>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button class="btn btn-success" onclick="themThangLamViec()">Lưu & Thêm</button>
+                    <button class="btn btn-success" onclick="themTuanLamViec()">Thêm Tuần</button>
+                    <button class="btn btn-success" onclick="suaThangLamViec()">Lưu & đóng</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                </div>
+
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,938 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TASK_THUCTAPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BOPHAN">
+          <Key>
+            <PropertyRef Name="idBoPhan" />
+          </Key>
+          <Property Name="idBoPhan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenBP" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CONGVIECTUAN">
+          <Key>
+            <PropertyRef Name="idCongViecTuan" />
+          </Key>
+          <Property Name="idCongViecTuan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTuan" Type="int" />
+          <Property Name="idNguoiDung" Type="int" />
+          <Property Name="idModule" Type="int" />
+          <Property Name="TenIssue" Type="nvarchar(max)" />
+          <Property Name="Urllssue" Type="nvarchar(max)" />
+          <Property Name="TenCongViec" Type="nvarchar(max)" />
+          <Property Name="ThoiGianLam" Type="int" />
+          <Property Name="Nguon" Type="nvarchar(max)" />
+          <Property Name="TrangThai" Type="nvarchar(max)" />
+          <Property Name="NgayBD" Type="date" />
+          <Property Name="NgayKT" Type="date" />
+          <Property Name="GhiChu" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DGNHANSUTHEOTHANG">
+          <Key>
+            <PropertyRef Name="idDanhGiaNSThang" />
+          </Key>
+          <Property Name="idDanhGiaNSThang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idThang" Type="int" />
+          <Property Name="idNguoiDung" Type="int" />
+          <Property Name="KhoiLuong" Type="nvarchar(max)" />
+          <Property Name="ChatLuong" Type="nvarchar(max)" />
+          <Property Name="TienDo" Type="nvarchar(max)" />
+          <Property Name="XepLoai" Type="nvarchar(max)" />
+          <Property Name="NhanXetCaThang" Type="nvarchar(max)" />
+          <Property Name="TBThang" Type="int" />
+          <Property Name="TongGio" Type="int" />
+        </EntityType>
+        <EntityType Name="DGNHANSUTHEOTUAN">
+          <Key>
+            <PropertyRef Name="idDanhGiaNSTuan" />
+          </Key>
+          <Property Name="idDanhGiaNSTuan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idTuan" Type="int" />
+          <Property Name="idNguoiDung" Type="int" />
+          <Property Name="HoanThanh" Type="int" />
+          <Property Name="KhoiLuong" Type="nvarchar(max)" />
+          <Property Name="TienDo" Type="nvarchar(max)" />
+          <Property Name="ChatLuong" Type="nvarchar(max)" />
+          <Property Name="LoiTrongTuan" Type="nvarchar(max)" />
+          <Property Name="NhanXetTuan" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DUAN">
+          <Key>
+            <PropertyRef Name="idDuAn" />
+          </Key>
+          <Property Name="idDuAn" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenDuAn" Type="nvarchar(max)" />
+          <Property Name="HinhAnh" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="DUANTHAMGIA">
+          <Key>
+            <PropertyRef Name="idDuAnThamGia" />
+          </Key>
+          <Property Name="idDuAnThamGia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idDuAn" Type="int" />
+          <Property Name="idNguoiDung" Type="int" />
+          <Property Name="idBoPhan" Type="int" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <EntityType Name="MODULE">
+          <Key>
+            <PropertyRef Name="idModule" />
+          </Key>
+          <Property Name="idModule" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenModule" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NGUOIDUNG">
+          <Key>
+            <PropertyRef Name="idNguoiDung" />
+          </Key>
+          <Property Name="idNguoiDung" Type="int" Nullable="false" />
+          <Property Name="HoDemND" Type="nvarchar(max)" />
+          <Property Name="TenND" Type="nvarchar(max)" />
+          <Property Name="TenDangNhap" Type="varchar(max)" />
+          <Property Name="MatKhau" Type="varchar" MaxLength="100" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <EntityType Name="THANGLAMVIEC">
+          <Key>
+            <PropertyRef Name="idThang" />
+          </Key>
+          <Property Name="idThang" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idDuAn" Type="int" />
+          <Property Name="GiaTri" Type="int" />
+          <Property Name="Nam" Type="int" />
+          <Property Name="TenThang" Type="nvarchar(max)" />
+          <Property Name="NgayBDLam" Type="date" />
+          <Property Name="NgayKTLam" Type="date" />
+        </EntityType>
+        <EntityType Name="TODOLIST">
+          <Key>
+            <PropertyRef Name="idToDoList" />
+          </Key>
+          <Property Name="idToDoList" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idDuAn" Type="int" />
+          <Property Name="idNguoiDung" Type="int" />
+          <Property Name="NoiDung" Type="nvarchar(max)" />
+          <Property Name="NgayGiao" Type="date" />
+          <Property Name="HanDen" Type="date" />
+          <Property Name="GhiChu" Type="nvarchar(max)" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <EntityType Name="TUANLAMVIEC">
+          <Key>
+            <PropertyRef Name="idTuan" />
+          </Key>
+          <Property Name="idTuan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idThang" Type="int" />
+          <Property Name="STTTuan" Type="int" />
+          <Property Name="TenTuan" Type="nvarchar(max)" />
+          <Property Name="NgayBD" Type="date" />
+          <Property Name="NgayKT" Type="date" />
+          <Property Name="SoGioLamViec" Type="int" />
+          <Property Name="TrangThai" Type="bit" />
+        </EntityType>
+        <Association Name="FK_CONGVIECTUAN_MODULE">
+          <End Role="MODULE" Type="Self.MODULE" Multiplicity="0..1" />
+          <End Role="CONGVIECTUAN" Type="Self.CONGVIECTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODULE">
+              <PropertyRef Name="idModule" />
+            </Principal>
+            <Dependent Role="CONGVIECTUAN">
+              <PropertyRef Name="idModule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONGVIECTUAN_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="CONGVIECTUAN" Type="Self.CONGVIECTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="CONGVIECTUAN">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONGVIECTUAN_TUANLAMVIEC">
+          <End Role="TUANLAMVIEC" Type="Self.TUANLAMVIEC" Multiplicity="0..1" />
+          <End Role="CONGVIECTUAN" Type="Self.CONGVIECTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUANLAMVIEC">
+              <PropertyRef Name="idTuan" />
+            </Principal>
+            <Dependent Role="CONGVIECTUAN">
+              <PropertyRef Name="idTuan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTHANG_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTHANG" Type="Self.DGNHANSUTHEOTHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTHANG">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTHANG_THANGLAMVIEC">
+          <End Role="THANGLAMVIEC" Type="Self.THANGLAMVIEC" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTHANG" Type="Self.DGNHANSUTHEOTHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THANGLAMVIEC">
+              <PropertyRef Name="idThang" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTHANG">
+              <PropertyRef Name="idThang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTUAN_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTUAN" Type="Self.DGNHANSUTHEOTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTUAN">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTUAN_TUANLAMVIEC">
+          <End Role="TUANLAMVIEC" Type="Self.TUANLAMVIEC" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTUAN" Type="Self.DGNHANSUTHEOTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUANLAMVIEC">
+              <PropertyRef Name="idTuan" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTUAN">
+              <PropertyRef Name="idTuan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUANTHAMGIA_BOPHAN">
+          <End Role="BOPHAN" Type="Self.BOPHAN" Multiplicity="0..1" />
+          <End Role="DUANTHAMGIA" Type="Self.DUANTHAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOPHAN">
+              <PropertyRef Name="idBoPhan" />
+            </Principal>
+            <Dependent Role="DUANTHAMGIA">
+              <PropertyRef Name="idBoPhan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUANTHAMGIA_DUAN">
+          <End Role="DUAN" Type="Self.DUAN" Multiplicity="0..1" />
+          <End Role="DUANTHAMGIA" Type="Self.DUANTHAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUAN">
+              <PropertyRef Name="idDuAn" />
+            </Principal>
+            <Dependent Role="DUANTHAMGIA">
+              <PropertyRef Name="idDuAn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUANTHAMGIA_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="DUANTHAMGIA" Type="Self.DUANTHAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="DUANTHAMGIA">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THANGLAMVIEC_DUAN">
+          <End Role="DUAN" Type="Self.DUAN" Multiplicity="0..1" />
+          <End Role="THANGLAMVIEC" Type="Self.THANGLAMVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUAN">
+              <PropertyRef Name="idDuAn" />
+            </Principal>
+            <Dependent Role="THANGLAMVIEC">
+              <PropertyRef Name="idDuAn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOLIST_DUAN">
+          <End Role="DUAN" Type="Self.DUAN" Multiplicity="0..1" />
+          <End Role="TODOLIST" Type="Self.TODOLIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUAN">
+              <PropertyRef Name="idDuAn" />
+            </Principal>
+            <Dependent Role="TODOLIST">
+              <PropertyRef Name="idDuAn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOLIST_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="TODOLIST" Type="Self.TODOLIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="TODOLIST">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUANLAMVIEC_THANGLAMVIEC">
+          <End Role="THANGLAMVIEC" Type="Self.THANGLAMVIEC" Multiplicity="0..1" />
+          <End Role="TUANLAMVIEC" Type="Self.TUANLAMVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THANGLAMVIEC">
+              <PropertyRef Name="idThang" />
+            </Principal>
+            <Dependent Role="TUANLAMVIEC">
+              <PropertyRef Name="idThang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TASK_THUCTAPModelStoreContainer">
+          <EntitySet Name="BOPHAN" EntityType="Self.BOPHAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CONGVIECTUAN" EntityType="Self.CONGVIECTUAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DGNHANSUTHEOTHANG" EntityType="Self.DGNHANSUTHEOTHANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DGNHANSUTHEOTUAN" EntityType="Self.DGNHANSUTHEOTUAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DUAN" EntityType="Self.DUAN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DUANTHAMGIA" EntityType="Self.DUANTHAMGIA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MODULE" EntityType="Self.MODULE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NGUOIDUNG" EntityType="Self.NGUOIDUNG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="THANGLAMVIEC" EntityType="Self.THANGLAMVIEC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TODOLIST" EntityType="Self.TODOLIST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUANLAMVIEC" EntityType="Self.TUANLAMVIEC" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CONGVIECTUAN_MODULE" Association="Self.FK_CONGVIECTUAN_MODULE">
+            <End Role="MODULE" EntitySet="MODULE" />
+            <End Role="CONGVIECTUAN" EntitySet="CONGVIECTUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONGVIECTUAN_NGUOIDUNG" Association="Self.FK_CONGVIECTUAN_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="CONGVIECTUAN" EntitySet="CONGVIECTUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONGVIECTUAN_TUANLAMVIEC" Association="Self.FK_CONGVIECTUAN_TUANLAMVIEC">
+            <End Role="TUANLAMVIEC" EntitySet="TUANLAMVIEC" />
+            <End Role="CONGVIECTUAN" EntitySet="CONGVIECTUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTHANG_NGUOIDUNG" Association="Self.FK_DGNHANSUTHEOTHANG_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="DGNHANSUTHEOTHANG" EntitySet="DGNHANSUTHEOTHANG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTHANG_THANGLAMVIEC" Association="Self.FK_DGNHANSUTHEOTHANG_THANGLAMVIEC">
+            <End Role="THANGLAMVIEC" EntitySet="THANGLAMVIEC" />
+            <End Role="DGNHANSUTHEOTHANG" EntitySet="DGNHANSUTHEOTHANG" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTUAN_NGUOIDUNG" Association="Self.FK_DGNHANSUTHEOTUAN_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="DGNHANSUTHEOTUAN" EntitySet="DGNHANSUTHEOTUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTUAN_TUANLAMVIEC" Association="Self.FK_DGNHANSUTHEOTUAN_TUANLAMVIEC">
+            <End Role="TUANLAMVIEC" EntitySet="TUANLAMVIEC" />
+            <End Role="DGNHANSUTHEOTUAN" EntitySet="DGNHANSUTHEOTUAN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUANTHAMGIA_BOPHAN" Association="Self.FK_DUANTHAMGIA_BOPHAN">
+            <End Role="BOPHAN" EntitySet="BOPHAN" />
+            <End Role="DUANTHAMGIA" EntitySet="DUANTHAMGIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUANTHAMGIA_DUAN" Association="Self.FK_DUANTHAMGIA_DUAN">
+            <End Role="DUAN" EntitySet="DUAN" />
+            <End Role="DUANTHAMGIA" EntitySet="DUANTHAMGIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUANTHAMGIA_NGUOIDUNG" Association="Self.FK_DUANTHAMGIA_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="DUANTHAMGIA" EntitySet="DUANTHAMGIA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THANGLAMVIEC_DUAN" Association="Self.FK_THANGLAMVIEC_DUAN">
+            <End Role="DUAN" EntitySet="DUAN" />
+            <End Role="THANGLAMVIEC" EntitySet="THANGLAMVIEC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOLIST_DUAN" Association="Self.FK_TODOLIST_DUAN">
+            <End Role="DUAN" EntitySet="DUAN" />
+            <End Role="TODOLIST" EntitySet="TODOLIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOLIST_NGUOIDUNG" Association="Self.FK_TODOLIST_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNG" />
+            <End Role="TODOLIST" EntitySet="TODOLIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUANLAMVIEC_THANGLAMVIEC" Association="Self.FK_TUANLAMVIEC_THANGLAMVIEC">
+            <End Role="THANGLAMVIEC" EntitySet="THANGLAMVIEC" />
+            <End Role="TUANLAMVIEC" EntitySet="TUANLAMVIEC" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TASK_THUCTAPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BOPHAN">
+          <Key>
+            <PropertyRef Name="idBoPhan" />
+          </Key>
+          <Property Name="idBoPhan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenBP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DUANTHAMGIAs" Relationship="Self.FK_DUANTHAMGIA_BOPHAN" FromRole="BOPHAN" ToRole="DUANTHAMGIA" />
+        </EntityType>
+        <EntityType Name="CONGVIECTUAN">
+          <Key>
+            <PropertyRef Name="idCongViecTuan" />
+          </Key>
+          <Property Name="idCongViecTuan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTuan" Type="Int32" />
+          <Property Name="idNguoiDung" Type="Int32" />
+          <Property Name="idModule" Type="Int32" />
+          <Property Name="TenIssue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Urllssue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenCongViec" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ThoiGianLam" Type="Int32" />
+          <Property Name="Nguon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBD" Type="DateTime" Precision="0" />
+          <Property Name="NgayKT" Type="DateTime" Precision="0" />
+          <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MODULE" Relationship="Self.FK_CONGVIECTUAN_MODULE" FromRole="CONGVIECTUAN" ToRole="MODULE" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK_CONGVIECTUAN_NGUOIDUNG" FromRole="CONGVIECTUAN" ToRole="NGUOIDUNG" />
+          <NavigationProperty Name="TUANLAMVIEC" Relationship="Self.FK_CONGVIECTUAN_TUANLAMVIEC" FromRole="CONGVIECTUAN" ToRole="TUANLAMVIEC" />
+        </EntityType>
+        <EntityType Name="DGNHANSUTHEOTHANG">
+          <Key>
+            <PropertyRef Name="idDanhGiaNSThang" />
+          </Key>
+          <Property Name="idDanhGiaNSThang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idThang" Type="Int32" />
+          <Property Name="idNguoiDung" Type="Int32" />
+          <Property Name="KhoiLuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChatLuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TienDo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="XepLoai" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NhanXetCaThang" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TBThang" Type="Int32" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK_DGNHANSUTHEOTHANG_NGUOIDUNG" FromRole="DGNHANSUTHEOTHANG" ToRole="NGUOIDUNG" />
+          <NavigationProperty Name="THANGLAMVIEC" Relationship="Self.FK_DGNHANSUTHEOTHANG_THANGLAMVIEC" FromRole="DGNHANSUTHEOTHANG" ToRole="THANGLAMVIEC" />
+          <Property Name="TongGio" Type="Int32" />
+        </EntityType>
+        <EntityType Name="DGNHANSUTHEOTUAN">
+          <Key>
+            <PropertyRef Name="idDanhGiaNSTuan" />
+          </Key>
+          <Property Name="idDanhGiaNSTuan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idTuan" Type="Int32" />
+          <Property Name="idNguoiDung" Type="Int32" />
+          <Property Name="HoanThanh" Type="Int32" />
+          <Property Name="KhoiLuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TienDo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChatLuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LoiTrongTuan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NhanXetTuan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK_DGNHANSUTHEOTUAN_NGUOIDUNG" FromRole="DGNHANSUTHEOTUAN" ToRole="NGUOIDUNG" />
+          <NavigationProperty Name="TUANLAMVIEC" Relationship="Self.FK_DGNHANSUTHEOTUAN_TUANLAMVIEC" FromRole="DGNHANSUTHEOTUAN" ToRole="TUANLAMVIEC" />
+        </EntityType>
+        <EntityType Name="DUAN">
+          <Key>
+            <PropertyRef Name="idDuAn" />
+          </Key>
+          <Property Name="idDuAn" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenDuAn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DUANTHAMGIAs" Relationship="Self.FK_DUANTHAMGIA_DUAN" FromRole="DUAN" ToRole="DUANTHAMGIA" />
+          <NavigationProperty Name="THANGLAMVIECs" Relationship="Self.FK_THANGLAMVIEC_DUAN" FromRole="DUAN" ToRole="THANGLAMVIEC" />
+          <NavigationProperty Name="TODOLISTs" Relationship="Self.FK_TODOLIST_DUAN" FromRole="DUAN" ToRole="TODOLIST" />
+        </EntityType>
+        <EntityType Name="DUANTHAMGIA">
+          <Key>
+            <PropertyRef Name="idDuAnThamGia" />
+          </Key>
+          <Property Name="idDuAnThamGia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idDuAn" Type="Int32" />
+          <Property Name="idNguoiDung" Type="Int32" />
+          <Property Name="idBoPhan" Type="Int32" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="BOPHAN" Relationship="Self.FK_DUANTHAMGIA_BOPHAN" FromRole="DUANTHAMGIA" ToRole="BOPHAN" />
+          <NavigationProperty Name="DUAN" Relationship="Self.FK_DUANTHAMGIA_DUAN" FromRole="DUANTHAMGIA" ToRole="DUAN" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK_DUANTHAMGIA_NGUOIDUNG" FromRole="DUANTHAMGIA" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="MODULE">
+          <Key>
+            <PropertyRef Name="idModule" />
+          </Key>
+          <Property Name="idModule" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenModule" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CONGVIECTUANs" Relationship="Self.FK_CONGVIECTUAN_MODULE" FromRole="MODULE" ToRole="CONGVIECTUAN" />
+        </EntityType>
+        <EntityType Name="NGUOIDUNG">
+          <Key>
+            <PropertyRef Name="idNguoiDung" />
+          </Key>
+          <Property Name="idNguoiDung" Type="Int32" Nullable="false" />
+          <Property Name="HoDemND" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenND" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenDangNhap" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="CONGVIECTUANs" Relationship="Self.FK_CONGVIECTUAN_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="CONGVIECTUAN" />
+          <NavigationProperty Name="DGNHANSUTHEOTHANGs" Relationship="Self.FK_DGNHANSUTHEOTHANG_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="DGNHANSUTHEOTHANG" />
+          <NavigationProperty Name="DGNHANSUTHEOTUANs" Relationship="Self.FK_DGNHANSUTHEOTUAN_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="DGNHANSUTHEOTUAN" />
+          <NavigationProperty Name="DUANTHAMGIAs" Relationship="Self.FK_DUANTHAMGIA_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="DUANTHAMGIA" />
+          <NavigationProperty Name="TODOLISTs" Relationship="Self.FK_TODOLIST_NGUOIDUNG" FromRole="NGUOIDUNG" ToRole="TODOLIST" />
+        </EntityType>
+        <EntityType Name="THANGLAMVIEC">
+          <Key>
+            <PropertyRef Name="idThang" />
+          </Key>
+          <Property Name="idThang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idDuAn" Type="Int32" />
+          <Property Name="GiaTri" Type="Int32" />
+          <Property Name="Nam" Type="Int32" />
+          <Property Name="TenThang" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBDLam" Type="DateTime" Precision="0" />
+          <Property Name="NgayKTLam" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="DGNHANSUTHEOTHANGs" Relationship="Self.FK_DGNHANSUTHEOTHANG_THANGLAMVIEC" FromRole="THANGLAMVIEC" ToRole="DGNHANSUTHEOTHANG" />
+          <NavigationProperty Name="DUAN" Relationship="Self.FK_THANGLAMVIEC_DUAN" FromRole="THANGLAMVIEC" ToRole="DUAN" />
+          <NavigationProperty Name="TUANLAMVIECs" Relationship="Self.FK_TUANLAMVIEC_THANGLAMVIEC" FromRole="THANGLAMVIEC" ToRole="TUANLAMVIEC" />
+        </EntityType>
+        <EntityType Name="TODOLIST">
+          <Key>
+            <PropertyRef Name="idToDoList" />
+          </Key>
+          <Property Name="idToDoList" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idDuAn" Type="Int32" />
+          <Property Name="idNguoiDung" Type="Int32" />
+          <Property Name="NoiDung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayGiao" Type="DateTime" Precision="0" />
+          <Property Name="HanDen" Type="DateTime" Precision="0" />
+          <Property Name="GhiChu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="DUAN" Relationship="Self.FK_TODOLIST_DUAN" FromRole="TODOLIST" ToRole="DUAN" />
+          <NavigationProperty Name="NGUOIDUNG" Relationship="Self.FK_TODOLIST_NGUOIDUNG" FromRole="TODOLIST" ToRole="NGUOIDUNG" />
+        </EntityType>
+        <EntityType Name="TUANLAMVIEC">
+          <Key>
+            <PropertyRef Name="idTuan" />
+          </Key>
+          <Property Name="idTuan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idThang" Type="Int32" />
+          <Property Name="STTTuan" Type="Int32" />
+          <Property Name="TenTuan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBD" Type="DateTime" Precision="0" />
+          <Property Name="NgayKT" Type="DateTime" Precision="0" />
+          <Property Name="SoGioLamViec" Type="Int32" />
+          <Property Name="TrangThai" Type="Boolean" />
+          <NavigationProperty Name="CONGVIECTUANs" Relationship="Self.FK_CONGVIECTUAN_TUANLAMVIEC" FromRole="TUANLAMVIEC" ToRole="CONGVIECTUAN" />
+          <NavigationProperty Name="DGNHANSUTHEOTUANs" Relationship="Self.FK_DGNHANSUTHEOTUAN_TUANLAMVIEC" FromRole="TUANLAMVIEC" ToRole="DGNHANSUTHEOTUAN" />
+          <NavigationProperty Name="THANGLAMVIEC" Relationship="Self.FK_TUANLAMVIEC_THANGLAMVIEC" FromRole="TUANLAMVIEC" ToRole="THANGLAMVIEC" />
+        </EntityType>
+        <Association Name="FK_DUANTHAMGIA_BOPHAN">
+          <End Role="BOPHAN" Type="Self.BOPHAN" Multiplicity="0..1" />
+          <End Role="DUANTHAMGIA" Type="Self.DUANTHAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOPHAN">
+              <PropertyRef Name="idBoPhan" />
+            </Principal>
+            <Dependent Role="DUANTHAMGIA">
+              <PropertyRef Name="idBoPhan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONGVIECTUAN_MODULE">
+          <End Role="MODULE" Type="Self.MODULE" Multiplicity="0..1" />
+          <End Role="CONGVIECTUAN" Type="Self.CONGVIECTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODULE">
+              <PropertyRef Name="idModule" />
+            </Principal>
+            <Dependent Role="CONGVIECTUAN">
+              <PropertyRef Name="idModule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONGVIECTUAN_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="CONGVIECTUAN" Type="Self.CONGVIECTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="CONGVIECTUAN">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONGVIECTUAN_TUANLAMVIEC">
+          <End Role="TUANLAMVIEC" Type="Self.TUANLAMVIEC" Multiplicity="0..1" />
+          <End Role="CONGVIECTUAN" Type="Self.CONGVIECTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUANLAMVIEC">
+              <PropertyRef Name="idTuan" />
+            </Principal>
+            <Dependent Role="CONGVIECTUAN">
+              <PropertyRef Name="idTuan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTHANG_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTHANG" Type="Self.DGNHANSUTHEOTHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTHANG">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTHANG_THANGLAMVIEC">
+          <End Role="THANGLAMVIEC" Type="Self.THANGLAMVIEC" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTHANG" Type="Self.DGNHANSUTHEOTHANG" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THANGLAMVIEC">
+              <PropertyRef Name="idThang" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTHANG">
+              <PropertyRef Name="idThang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTUAN_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTUAN" Type="Self.DGNHANSUTHEOTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTUAN">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DGNHANSUTHEOTUAN_TUANLAMVIEC">
+          <End Role="TUANLAMVIEC" Type="Self.TUANLAMVIEC" Multiplicity="0..1" />
+          <End Role="DGNHANSUTHEOTUAN" Type="Self.DGNHANSUTHEOTUAN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUANLAMVIEC">
+              <PropertyRef Name="idTuan" />
+            </Principal>
+            <Dependent Role="DGNHANSUTHEOTUAN">
+              <PropertyRef Name="idTuan" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUANTHAMGIA_DUAN">
+          <End Role="DUAN" Type="Self.DUAN" Multiplicity="0..1" />
+          <End Role="DUANTHAMGIA" Type="Self.DUANTHAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUAN">
+              <PropertyRef Name="idDuAn" />
+            </Principal>
+            <Dependent Role="DUANTHAMGIA">
+              <PropertyRef Name="idDuAn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_THANGLAMVIEC_DUAN">
+          <End Role="DUAN" Type="Self.DUAN" Multiplicity="0..1" />
+          <End Role="THANGLAMVIEC" Type="Self.THANGLAMVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUAN">
+              <PropertyRef Name="idDuAn" />
+            </Principal>
+            <Dependent Role="THANGLAMVIEC">
+              <PropertyRef Name="idDuAn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOLIST_DUAN">
+          <End Role="DUAN" Type="Self.DUAN" Multiplicity="0..1" />
+          <End Role="TODOLIST" Type="Self.TODOLIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DUAN">
+              <PropertyRef Name="idDuAn" />
+            </Principal>
+            <Dependent Role="TODOLIST">
+              <PropertyRef Name="idDuAn" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DUANTHAMGIA_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="DUANTHAMGIA" Type="Self.DUANTHAMGIA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="DUANTHAMGIA">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOLIST_NGUOIDUNG">
+          <End Role="NGUOIDUNG" Type="Self.NGUOIDUNG" Multiplicity="0..1" />
+          <End Role="TODOLIST" Type="Self.TODOLIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NGUOIDUNG">
+              <PropertyRef Name="idNguoiDung" />
+            </Principal>
+            <Dependent Role="TODOLIST">
+              <PropertyRef Name="idNguoiDung" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUANLAMVIEC_THANGLAMVIEC">
+          <End Role="THANGLAMVIEC" Type="Self.THANGLAMVIEC" Multiplicity="0..1" />
+          <End Role="TUANLAMVIEC" Type="Self.TUANLAMVIEC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="THANGLAMVIEC">
+              <PropertyRef Name="idThang" />
+            </Principal>
+            <Dependent Role="TUANLAMVIEC">
+              <PropertyRef Name="idThang" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TASK_THUCTAPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BOPHANs" EntityType="Self.BOPHAN" />
+          <EntitySet Name="CONGVIECTUANs" EntityType="Self.CONGVIECTUAN" />
+          <EntitySet Name="DGNHANSUTHEOTHANGs" EntityType="Self.DGNHANSUTHEOTHANG" />
+          <EntitySet Name="DGNHANSUTHEOTUANs" EntityType="Self.DGNHANSUTHEOTUAN" />
+          <EntitySet Name="DUANs" EntityType="Self.DUAN" />
+          <EntitySet Name="DUANTHAMGIAs" EntityType="Self.DUANTHAMGIA" />
+          <EntitySet Name="MODULEs" EntityType="Self.MODULE" />
+          <EntitySet Name="NGUOIDUNGs" EntityType="Self.NGUOIDUNG" />
+          <EntitySet Name="THANGLAMVIECs" EntityType="Self.THANGLAMVIEC" />
+          <EntitySet Name="TODOLISTs" EntityType="Self.TODOLIST" />
+          <EntitySet Name="TUANLAMVIECs" EntityType="Self.TUANLAMVIEC" />
+          <AssociationSet Name="FK_DUANTHAMGIA_BOPHAN" Association="Self.FK_DUANTHAMGIA_BOPHAN">
+            <End Role="BOPHAN" EntitySet="BOPHANs" />
+            <End Role="DUANTHAMGIA" EntitySet="DUANTHAMGIAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONGVIECTUAN_MODULE" Association="Self.FK_CONGVIECTUAN_MODULE">
+            <End Role="MODULE" EntitySet="MODULEs" />
+            <End Role="CONGVIECTUAN" EntitySet="CONGVIECTUANs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONGVIECTUAN_NGUOIDUNG" Association="Self.FK_CONGVIECTUAN_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="CONGVIECTUAN" EntitySet="CONGVIECTUANs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONGVIECTUAN_TUANLAMVIEC" Association="Self.FK_CONGVIECTUAN_TUANLAMVIEC">
+            <End Role="TUANLAMVIEC" EntitySet="TUANLAMVIECs" />
+            <End Role="CONGVIECTUAN" EntitySet="CONGVIECTUANs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTHANG_NGUOIDUNG" Association="Self.FK_DGNHANSUTHEOTHANG_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="DGNHANSUTHEOTHANG" EntitySet="DGNHANSUTHEOTHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTHANG_THANGLAMVIEC" Association="Self.FK_DGNHANSUTHEOTHANG_THANGLAMVIEC">
+            <End Role="THANGLAMVIEC" EntitySet="THANGLAMVIECs" />
+            <End Role="DGNHANSUTHEOTHANG" EntitySet="DGNHANSUTHEOTHANGs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTUAN_NGUOIDUNG" Association="Self.FK_DGNHANSUTHEOTUAN_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="DGNHANSUTHEOTUAN" EntitySet="DGNHANSUTHEOTUANs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DGNHANSUTHEOTUAN_TUANLAMVIEC" Association="Self.FK_DGNHANSUTHEOTUAN_TUANLAMVIEC">
+            <End Role="TUANLAMVIEC" EntitySet="TUANLAMVIECs" />
+            <End Role="DGNHANSUTHEOTUAN" EntitySet="DGNHANSUTHEOTUANs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUANTHAMGIA_DUAN" Association="Self.FK_DUANTHAMGIA_DUAN">
+            <End Role="DUAN" EntitySet="DUANs" />
+            <End Role="DUANTHAMGIA" EntitySet="DUANTHAMGIAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_THANGLAMVIEC_DUAN" Association="Self.FK_THANGLAMVIEC_DUAN">
+            <End Role="DUAN" EntitySet="DUANs" />
+            <End Role="THANGLAMVIEC" EntitySet="THANGLAMVIECs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOLIST_DUAN" Association="Self.FK_TODOLIST_DUAN">
+            <End Role="DUAN" EntitySet="DUANs" />
+            <End Role="TODOLIST" EntitySet="TODOLISTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DUANTHAMGIA_NGUOIDUNG" Association="Self.FK_DUANTHAMGIA_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="DUANTHAMGIA" EntitySet="DUANTHAMGIAs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOLIST_NGUOIDUNG" Association="Self.FK_TODOLIST_NGUOIDUNG">
+            <End Role="NGUOIDUNG" EntitySet="NGUOIDUNGs" />
+            <End Role="TODOLIST" EntitySet="TODOLISTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUANLAMVIEC_THANGLAMVIEC" Association="Self.FK_TUANLAMVIEC_THANGLAMVIEC">
+            <End Role="THANGLAMVIEC" EntitySet="THANGLAMVIECs" />
+            <End Role="TUANLAMVIEC" EntitySet="TUANLAMVIECs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TASK_THUCTAPModelStoreContainer" CdmEntityContainer="TASK_THUCTAPEntities">
+          <EntitySetMapping Name="BOPHANs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.BOPHAN">
+              <MappingFragment StoreEntitySet="BOPHAN">
+                <ScalarProperty Name="idBoPhan" ColumnName="idBoPhan" />
+                <ScalarProperty Name="TenBP" ColumnName="TenBP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CONGVIECTUANs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.CONGVIECTUAN">
+              <MappingFragment StoreEntitySet="CONGVIECTUAN">
+                <ScalarProperty Name="idCongViecTuan" ColumnName="idCongViecTuan" />
+                <ScalarProperty Name="idTuan" ColumnName="idTuan" />
+                <ScalarProperty Name="idNguoiDung" ColumnName="idNguoiDung" />
+                <ScalarProperty Name="idModule" ColumnName="idModule" />
+                <ScalarProperty Name="TenIssue" ColumnName="TenIssue" />
+                <ScalarProperty Name="Urllssue" ColumnName="Urllssue" />
+                <ScalarProperty Name="TenCongViec" ColumnName="TenCongViec" />
+                <ScalarProperty Name="ThoiGianLam" ColumnName="ThoiGianLam" />
+                <ScalarProperty Name="Nguon" ColumnName="Nguon" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+                <ScalarProperty Name="NgayBD" ColumnName="NgayBD" />
+                <ScalarProperty Name="NgayKT" ColumnName="NgayKT" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DGNHANSUTHEOTHANGs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.DGNHANSUTHEOTHANG">
+              <MappingFragment StoreEntitySet="DGNHANSUTHEOTHANG">
+                <ScalarProperty Name="TongGio" ColumnName="TongGio" />
+                <ScalarProperty Name="idDanhGiaNSThang" ColumnName="idDanhGiaNSThang" />
+                <ScalarProperty Name="idThang" ColumnName="idThang" />
+                <ScalarProperty Name="idNguoiDung" ColumnName="idNguoiDung" />
+                <ScalarProperty Name="KhoiLuong" ColumnName="KhoiLuong" />
+                <ScalarProperty Name="ChatLuong" ColumnName="ChatLuong" />
+                <ScalarProperty Name="TienDo" ColumnName="TienDo" />
+                <ScalarProperty Name="XepLoai" ColumnName="XepLoai" />
+                <ScalarProperty Name="NhanXetCaThang" ColumnName="NhanXetCaThang" />
+                <ScalarProperty Name="TBThang" ColumnName="TBThang" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DGNHANSUTHEOTUANs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.DGNHANSUTHEOTUAN">
+              <MappingFragment StoreEntitySet="DGNHANSUTHEOTUAN">
+                <ScalarProperty Name="idDanhGiaNSTuan" ColumnName="idDanhGiaNSTuan" />
+                <ScalarProperty Name="idTuan" ColumnName="idTuan" />
+                <ScalarProperty Name="idNguoiDung" ColumnName="idNguoiDung" />
+                <ScalarProperty Name="HoanThanh" ColumnName="HoanThanh" />
+                <ScalarProperty Name="KhoiLuong" ColumnName="KhoiLuong" />
+                <ScalarProperty Name="TienDo" ColumnName="TienDo" />
+                <ScalarProperty Name="ChatLuong" ColumnName="ChatLuong" />
+                <ScalarProperty Name="LoiTrongTuan" ColumnName="LoiTrongTuan" />
+                <ScalarProperty Name="NhanXetTuan" ColumnName="NhanXetTuan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DUANs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.DUAN">
+              <MappingFragment StoreEntitySet="DUAN">
+                <ScalarProperty Name="idDuAn" ColumnName="idDuAn" />
+                <ScalarProperty Name="TenDuAn" ColumnName="TenDuAn" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DUANTHAMGIAs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.DUANTHAMGIA">
+              <MappingFragment StoreEntitySet="DUANTHAMGIA">
+                <ScalarProperty Name="idDuAnThamGia" ColumnName="idDuAnThamGia" />
+                <ScalarProperty Name="idDuAn" ColumnName="idDuAn" />
+                <ScalarProperty Name="idNguoiDung" ColumnName="idNguoiDung" />
+                <ScalarProperty Name="idBoPhan" ColumnName="idBoPhan" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MODULEs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.MODULE">
+              <MappingFragment StoreEntitySet="MODULE">
+                <ScalarProperty Name="idModule" ColumnName="idModule" />
+                <ScalarProperty Name="TenModule" ColumnName="TenModule" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NGUOIDUNGs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.NGUOIDUNG">
+              <MappingFragment StoreEntitySet="NGUOIDUNG">
+                <ScalarProperty Name="idNguoiDung" ColumnName="idNguoiDung" />
+                <ScalarProperty Name="HoDemND" ColumnName="HoDemND" />
+                <ScalarProperty Name="TenND" ColumnName="TenND" />
+                <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="THANGLAMVIECs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.THANGLAMVIEC">
+              <MappingFragment StoreEntitySet="THANGLAMVIEC">
+                <ScalarProperty Name="idThang" ColumnName="idThang" />
+                <ScalarProperty Name="idDuAn" ColumnName="idDuAn" />
+                <ScalarProperty Name="GiaTri" ColumnName="GiaTri" />
+                <ScalarProperty Name="Nam" ColumnName="Nam" />
+                <ScalarProperty Name="TenThang" ColumnName="TenThang" />
+                <ScalarProperty Name="NgayBDLam" ColumnName="NgayBDLam" />
+                <ScalarProperty Name="NgayKTLam" ColumnName="NgayKTLam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TODOLISTs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.TODOLIST">
+              <MappingFragment StoreEntitySet="TODOLIST">
+                <ScalarProperty Name="idToDoList" ColumnName="idToDoList" />
+                <ScalarProperty Name="idDuAn" ColumnName="idDuAn" />
+                <ScalarProperty Name="idNguoiDung" ColumnName="idNguoiDung" />
+                <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+                <ScalarProperty Name="NgayGiao" ColumnName="NgayGiao" />
+                <ScalarProperty Name="HanDen" ColumnName="HanDen" />
+                <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUANLAMVIECs">
+            <EntityTypeMapping TypeName="TASK_THUCTAPModel.TUANLAMVIEC">
+              <MappingFragment StoreEntitySet="TUANLAMVIEC">
+                <ScalarProperty Name="idTuan" ColumnName="idTuan" />
+                <ScalarProperty Name="idThang" ColumnName="idThang" />
+                <ScalarProperty Name="STTTuan" ColumnName="STTTuan" />
+                <ScalarProperty Name="TenTuan" ColumnName="TenTuan" />
+                <ScalarProperty Name="NgayBD" ColumnName="NgayBD" />
+                <ScalarProperty Name="NgayKT" ColumnName="NgayKT" />
+                <ScalarProperty Name="SoGioLamViec" ColumnName="SoGioLamViec" />
+                <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
