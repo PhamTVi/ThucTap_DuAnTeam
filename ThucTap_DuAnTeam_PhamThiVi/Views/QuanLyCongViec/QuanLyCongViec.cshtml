@@ -473,13 +473,14 @@
                         </div>
                         <br />
                     </div>
+                   
                     <div class="form-group">
                         <div class="row">
                             <div class="col-lg-2">
                                 <label>Từ ngày <span style="color:red">*</span></label>
                             </div>
                             <div class="col-lg-4">
-                                <input class="form-control" type="date" style="width: 100%" id="TuNgay" />
+                                <input class="form-control" type="date" style="width: 100%" id="TuNgay"  />
                             </div>
                             <div class="col-lg-2">
                                 <label>Đến ngày <span style="color:red">*</span></label>
@@ -513,3 +514,39 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+
+        $('#TuNgay').on('blur', function () {
+        //    debugger;
+            var ngayBDNhap = $('#LoadTuan').val();
+            $.get('/QuanLyCongViec/TimKiemNgayLamViecTrongTuan?id=' + ngayBDNhap, function (resp) {
+                var ngayBD = resp.NgayBDLam2;
+                var ngayBDNhap2 = $('#TuNgay').val();
+                if (ngayBDNhap2 < ngayBD) {
+                    Swal.fire('Ngày bắt đầu phải trong khung giờ tuần')
+                }
+                console.log(resp.NgayKTLam2);
+            });
+           
+        })
+        $('#DenNgay').on('blur', function () {
+            //    debugger;
+            var ngayBDNhap = $('#LoadTuan').val();
+            $.get('/QuanLyCongViec/TimKiemNgayLamViecTrongTuan?id=' + ngayBDNhap, function (resp) {
+                var ngayKT = resp.NgayKTLam2;
+                var ngayKTNhap2 = $('#DenNgay').val();
+                var ngayBDNhap2 = $('#TuNgay').val();
+                if (ngayKTNhap2 > ngayKT) {
+                    Swal.fire('Ngày kết thúc phải trong khung giờ tuần')
+                }
+                else if (ngayKTNhap2 < ngayBDNhap2)
+                {
+                    Swal.fire('Hạn đến phải lớn hơn ngày giao')
+                }
+            });
+
+        })
+    </script>
+}

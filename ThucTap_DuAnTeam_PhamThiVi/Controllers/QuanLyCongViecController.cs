@@ -191,7 +191,32 @@ namespace ThucTap_DuAnTeam_PhamThiVi.Controllers
             var maduan = Session["MaDuAn"];
             return RedirectToAction("QuanLyCongViec", "QuanLyCongViec");
         }
+        public JsonResult TimKiemNgayLamViecTrongTuan(int? id)
+        {
+            int? maDAN = (int?)Session["MaDuAn"];
+            var rs = ql.TUANLAMVIECs.SingleOrDefault(sp => sp.idTuan == id);
+            if (rs != null)
+            {
+                return Json(new
+                {
+                    NgayBDLam2 = DateTime.Parse(rs.NgayBD.ToString()).ToString("yyyy-MM-dd"),
+                    NgayKTLam2 = DateTime.Parse(rs.NgayKT.ToString()).ToString("yyyy-MM-dd"),
+                    status = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new
+                {
+                    idThang = "",
+                    TenThang = "",
+                    NamLamViec = "",
+                    NgayBDLam2 = "",
+                    NgayKTLam2 = "",
+                    status = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
-      
     }
 }
