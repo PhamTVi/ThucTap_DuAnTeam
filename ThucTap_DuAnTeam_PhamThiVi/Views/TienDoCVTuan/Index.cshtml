@@ -74,10 +74,11 @@
             </div>
             <div class="col-lg-4" style="text-align: center;">
                 <p><h3>Tuần 1: 5/7 - 10/7</h3></p>
+                
             </div>
 
             <div class="col-lg-4" style="text-align: center;">
-                <p><h3><i class="fas fa-angle-left"></i>&ensp; HÔM NAY &ensp;<i class="fas fa-angle-right"></i></h3></p>
+                <p><h3><i class="fas fa-angle-left" onclick="layThangTruoc()"></i>&ensp; <span id="ngay">2-8-2021</span> &ensp;<i class="fas fa-angle-right" onclick="layThangSau()"></i></h3></p>
             </div>
         </div>
         <hr />
@@ -113,7 +114,9 @@
             </div>
         </div>
         <br />
-        <div id="chartdiv"></div>
+        <div id="chartdiv">
+            
+        </div>
     </div>
 </div>
 <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
@@ -125,10 +128,35 @@
         $(document).ready(() => {
             loadBieuDo();
         });
+        function layThangTruoc() {
+            var ngayHienTai2 = $('#ngay').text();
+            var thang = parseInt(ngayHienTai2.split("-")[0]) - 1;
+            if (thang != 0) {
+                var ngayHienTai = thang + '-' + ngayHienTai2.split("-")[1] + '-' + ngayHienTai2.split("-")[2];
+                $('#ngay').text(ngayHienTai);
+                $('#chartdiv').empty();
+                loadBieuDo();
+            }
+           
+         
+        }
+        function layThangSau() {
+            var ngayHienTai2 = $('#ngay').text();
+            var thang = parseInt(ngayHienTai2.split("-")[0]) + 1;
+            if (thang != 13) {
+                var ngayHienTai = thang + '-' + ngayHienTai2.split("-")[1] + '-' + ngayHienTai2.split("-")[2];
+                $('#ngay').text(ngayHienTai);
+                $('#chartdiv').empty();
+                loadBieuDo();
+            }
+          
+        }
         function loadBieuDo() {
+           // var ngayHienTai = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+            var ngayHienTai = $('#ngay').text();
            // var data = $('#idThang').val();
             // var thang = ViewBag.idThang;
-            $.get('/TienDoCVTuan/LoadTuanCVDuAn',function (resp) {
+            $.get('/TienDoCVTuan/LoadTuanCVDuAn?ngayHienTai=' + ngayHienTai,function (resp) {
                 console.log(resp.dataList);
                 luoiDo(resp.dataList);
             });
