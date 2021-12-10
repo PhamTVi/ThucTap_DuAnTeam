@@ -25,10 +25,10 @@ namespace ThucTap_DuAnTeam_PhamThiVi.Controllers
             }    
             return View();
         }
-        public JsonResult LoadTuanCVDuAn()
+        public JsonResult LoadTuanCVDuAn(DateTime ngayHienTai)
         {
-                int? maDAN = (int?)Session["MaDuAn"];
-            List<CONGVIECTUAN> lst = (from cvt in ql.CONGVIECTUANs
+            int? maDAN = (int?)Session["MaDuAn"];
+            List<CONGVIECTUAN> lst = (from cvt in ql.CONGVIECTUANs.Where( x=> x.NgayKT <= ngayHienTai)
                                       join tlv in ql.TUANLAMVIECs on cvt.idTuan equals tlv.idTuan
                                       join thanglv in ql.THANGLAMVIECs on tlv.idThang equals thanglv.idThang
                                       join da in ql.DUANs on thanglv.idDuAn equals da.idDuAn
